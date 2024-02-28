@@ -93,6 +93,15 @@ without netcat perf file :
 with netcat perf file :
 ![perf1](https://github.com/Rozh-Zizigoloo/linux-tracing/blob/main/assignment%201/SRC/Screenshot%202024-02-28%20093305.png)
 
+save :
+```
+sudo perf record -ae 'net:*,skb:*,irq:*,sched:sched_wak*,sched:sched_switch' -g
+perf report > /home/rozhina/simple.perf
+chown -R rozhina:rozhina /home/rozhina/simple.perf
+
+```
+![Picture1](https://github.com/Rozh-Zizigoloo/linux-tracing/blob/main/assignment%201/SRC/Screenshot%202024-02-28%20100706.png)
+
 ### ftrace (other way) 🔧
 For trace, we need a series of filters on kernel functions. Here we filter every function that has the names net, ip, tcp skb.
 ```
@@ -111,7 +120,7 @@ Finally, we save this trace in a file:
 
 - [ftrace.log](https://github.com/Rozh-Zizigoloo/Linux-Kernel-Tracing-in-Docker-Network/blob/main/src/perf_simple.txt) :
 
-![Picture1](https://github.com/Rozh-Zizigoloo/linux-tracing/blob/main/assignment%201/SRC/Screenshot%202024-02-28%20100706.png)
+
 
 ### Description
 1. tcp_v4_do_rcv:
