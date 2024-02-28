@@ -182,3 +182,43 @@ gro_cookie: Cookie value used for GRO operations.
 queue: Queue number on the network device where the packet was received.
 
 # ASSIgn 3 : 🥇
+
+This time, we redo the previous experiments, but this time, we use pinging.
+
+## ping
+
+First, we specify a custom packet size of 25000 bytes and we ping the default gateway:
+
+```
+ping -s 65507 10.0.2.2
+```
+
+![Ping_Fragment](https://github.com/Rozh-Zizigoloo/linux-tracing/assets/156912661/c4243771-cba5-4fd2-8a15-168b06af1c5b)
+
+ The trace would show individual ping packets with a larger size (64KB) compared to the standard ping packet size (typically around 56 bytes).
+ 
+Looking at Soft_irq Network RX in CPU5, it is obvious that fragmentation has occurred. The packet length in transmit events is 65507bytes; which is due to MTU (14 bytes for ethernet header).
+
+**"Soft_irq Network RX"** is a term used in the Linux kernel to describe a specific type of software interrupt related to network packet reception.
+
+Here's a breakdown of the components:
+
+Soft IRQ: An asynchronous interrupt handled in software context (outside the real-time interrupt handlers). This allows for more efficient processing of tasks that don't require immediate attention, like network packet processing.
+Network RX: Refers to receiving network packets from the network interface card (NIC) into the operating system.
+
+## flood ping
+
+```
+sudo ping -f 10.0.2.2
+```
+![Screenshot 2024-02-28 112710](https://github.com/Rozh-Zizigoloo/linux-tracing/assets/156912661/dc50fa19-7656-4510-9f3d-79e2ca3b0c1b)
+
+We can conclude that the result is the same as Telnet experiment. Because default gateway engages with our Network Adapter.
+**BUT**
+Ping: Only verifies basic reachability (whether the device is "alive").
+Telnet: Potentially allows limited interaction and access to services on the target device (if Telnet is enabled and secure measures are not in place).
+
+## References
+
+- [Deep Linux](https://www.youtube.com/@deeplinux2248)
+- [The Linux Kernel documentation](https://docs.kernel.org/)
