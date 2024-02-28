@@ -54,3 +54,35 @@ After that :
 ```
 sudo lttng start
 ```
+### Run NetCat :
+
+run for server :
+```
+nc -l 127.0.0.1 4000
+```
+
+run for client:
+
+```
+nc -p 4444 127.0.0.1 4000
+```
+
+### ftrace (other way) 🔧
+For trace, we need a series of filters on kernel functions. Here we filter every function that has the names net, ip, tcp skb.
+```
+echo 'net*' 'ip*' 'tcp*' 'skb*' >> set_ftrace_filter
+cat set_ftrace_filter
+echo function_graph >> /sys/kernel/debug/tracing/current_tracer
+```
+Then,we run trace and get a simple netcat.
+```
+echo 1 > /sys/kernel/debug/tracing/tracing_on
+Tab1 : $nc -l 127.0.0.1 4000
+Tab2:$nc -p 4444 127.0.0.1 4000
+echo 0 > /sys/kernel/debug/tracing/tracing_on
+```
+Finally, we save this trace in a file:
+
+- [ftrace.log](https://github.com/Rozh-Zizigoloo/Linux-Kernel-Tracing-in-Docker-Network/blob/main/src/perf_simple.txt) :
+
+![Picture1](https://github.com/Rozh-Zizigoloo/Linux-Kernel-Tracing-in-Docker-Network/assets/156912661/22d6111f-0e66-433b-95aa-276d272d0fcd)
