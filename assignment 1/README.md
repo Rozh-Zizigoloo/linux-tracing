@@ -114,3 +114,22 @@ Finally, we save this trace in a file:
 ![Picture1](https://github.com/Rozh-Zizigoloo/linux-tracing/blob/main/assignment%201/SRC/Screenshot%202024-02-28%20100706.png)
 
 ### Description
+1. tcp_v4_do_rcv:
+
+Function: This function is responsible for processing incoming TCP segments for IPv4 connections.
+2. tcp_rcv_state_process:
+
+Function: This function is a central point for handling incoming TCP segments based on the current state of the TCP connection.
+3. tcp_rcv_synsent_state_process:
+
+Function: This function specifically handles incoming segments for TCP connections that are in the SYN_SENT state (i.e., the connection is being initiated by the local socket).
+4. ip_queue_xmit:
+
+Function: This function is responsible for queuing packets (datagrams) for transmission on the network interface.
+5. __netif_receive_skb, __netif_receive_skb_one_core, __netif_receive_skb_core:
+
+Function: These functions are part of the network interface processing path and are responsible for handling received packets from the network. They work together to:
+__netif_receive_skb: This function is the entry point for received packets. It performs initial processing and calls __netif_receive_skb_one_core for further handling.
+__netif_receive_skb_one_core, __netif_receive_skb_core: These functions handle individual packets, performing tasks like:
+Updating network device statistics.
+Passing the packet up the protocol stack for further processing (e.g., to the IP layer for IPv4 packets).
