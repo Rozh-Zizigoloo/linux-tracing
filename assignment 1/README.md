@@ -133,3 +133,52 @@ __netif_receive_skb: This function is the entry point for received packets. It p
 __netif_receive_skb_one_core, __netif_receive_skb_core: These functions handle individual packets, performing tasks like:
 Updating network device statistics.
 Passing the packet up the protocol stack for further processing (e.g., to the IP layer for IPv4 packets).
+# ASSIgn 2 : 🥇
+Next, we utilize Telnet to establish a connection with www.google.com and execute an HTTP GET request in the subsequent manner.
+
+First, we establish the Telnet with google :
+
+```
+telnet www.google.com 80
+```
+
+After our connection is successfully set, we send a simple GET message:
+
+```
+GET /search?q=hello+world
+```
+
+Simultaneously, we run Perf:
+
+![Screenshot 2024-02-28 104500](https://github.com/Rozh-Zizigoloo/linux-tracing/assets/156912661/af86b4cc-b783-4148-b984-12a21d0db4f4)
+
+## difference 1,2:
+Now let's compare the Perf logs in Experiment 1 & 2.
+
+We could easily see that:
+
+**netif_rx** is present in netcat log and absent in Telnet log.
+*napi_gro_receive_entry is present in Telnet log and absent in netcat log.
+
+
+In the context of the Linux kernel, netif_rx is a function responsible for receiving and processing network packets from network devices (interfaces) like Ethernet cards or Wi-Fi adapters. It acts as a central entry point for incoming network traffic.
+
+Here's a detailed breakdown of its functionality:
+
+**Receiving Packets:**
+Network devices capture incoming raw data frames from the physical network (e.g., Ethernet cable).
+These frames are converted into kernel data structures called sk_buff (sk_buffer).
+The network device driver then invokes netif_rx and passes the sk_buff containing the packet data.
+
+**napi_gro_receive_entry** is a tracepoint defined in the Linux kernel related to the NAPI (Network Application Programming Interface) and GRO (Generic Receive Offload) functionalities.
+
+Data Captured by napi_gro_receive_entry (may vary depending on kernel version):
+
+skb: Pointer to the sk_buff (kernel data structure) containing the received packet.
+dev: Pointer to the network device that received the packet.
+len: Length of the received packet.
+flags: Flags associated with the received packet.
+gro_cookie: Cookie value used for GRO operations.
+queue: Queue number on the network device where the packet was received.
+
+# ASSIgn 3 : 🥇
