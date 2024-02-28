@@ -66,6 +66,32 @@ run for client:
 ```
 nc -p 4444 127.0.0.1 4000
 ```
+### result 🎥
+
+![netcat](https://github.com/Rozh-Zizigoloo/linux-tracing/blob/main/assignment%201/SRC/Screenshot%202024-02-28%20095508.png)
+
+then :
+
+```
+lttng stop
+lttng destroy
+```
+### result 🎥
+![TraceCompass_1](https://github.com/Rozh-Zizigoloo/linux-tracing/assets/156912661/754dc275-cae1-4210-ad6f-446c062f4066)
+
+![TraceCompass_2](https://github.com/Rozh-Zizigoloo/linux-tracing/assets/156912661/248bea0d-923a-4328-b96a-0c7992179571)
+
+### perf
+for count systemcall and show runtime :
+
+```
+sudo perf stat -ae 'net:*,skb:*,irq:*,sched:sched_wak*,sched:sched_switch' -I 1000
+```
+without netcat perf file :
+![perf1](https://github.com/Rozh-Zizigoloo/linux-tracing/blob/main/assignment%201/SRC/Screenshot%202024-02-28%20093526.png)
+
+with netcat perf file :
+![perf1](https://github.com/Rozh-Zizigoloo/linux-tracing/blob/main/assignment%201/SRC/Screenshot%202024-02-28%20093305.png)
 
 ### ftrace (other way) 🔧
 For trace, we need a series of filters on kernel functions. Here we filter every function that has the names net, ip, tcp skb.
@@ -85,4 +111,6 @@ Finally, we save this trace in a file:
 
 - [ftrace.log](https://github.com/Rozh-Zizigoloo/Linux-Kernel-Tracing-in-Docker-Network/blob/main/src/perf_simple.txt) :
 
-![Picture1](https://github.com/Rozh-Zizigoloo/Linux-Kernel-Tracing-in-Docker-Network/assets/156912661/22d6111f-0e66-433b-95aa-276d272d0fcd)
+![Picture1](https://github.com/Rozh-Zizigoloo/linux-tracing/blob/main/assignment%201/SRC/Screenshot%202024-02-28%20100706.png)
+
+### Description
