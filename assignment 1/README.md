@@ -96,7 +96,7 @@ with netcat perf file :
 ### ftrace (other way) 🔧
 For trace, we need a series of filters on kernel functions. Here we filter every function that has the names net, ip, tcp skb.
 ```
-echo 'net*' 'ip*' 'tcp*' 'skb*' >> set_ftrace_filter
+echo 'net*' 'ip*' 'tcp*' 'skb*' 'sched*' >> set_ftrace_filter
 cat set_ftrace_filter
 echo function_graph >> /sys/kernel/debug/tracing/current_tracer
 ```
